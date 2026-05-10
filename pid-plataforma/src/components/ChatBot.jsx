@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import mapIa from "../assets/mapIa.png";
 
 const API_URL = "https://backend-6wty.onrender.com/api/chat"; // 🔁 troque pela URL do seu backend
 
@@ -21,12 +22,11 @@ function Message({ msg }) {
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"} mb-3`}>
       {!isUser && (
-        <div
-          className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold mr-2 mt-1 shrink-0"
-          style={{ background: "#E84C1F" }}
-        >
-          PID
-        </div>
+        <img
+          src={mapIa}
+          alt="PID"
+          className="w-8 h-8 rounded-full mr-2 mt-1 shrink-0 object-cover"
+        />
       )}
       <div
         className="max-w-[75%] px-4 py-3 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap shadow-sm"
@@ -179,12 +179,11 @@ export default function ChatBot() {
           className="px-4 py-3 flex items-center gap-3"
           style={{ background: "#1A2744" }}
         >
-          <div
-            className="w-9 h-9 rounded-full flex items-center justify-center text-white font-black text-xs shrink-0"
-            style={{ background: "#E84C1F" }}
-          >
-            PID
-          </div>
+          <img
+            src={mapIa}
+            alt="PID"
+            className="w-9 h-9 rounded-full shrink-0 object-cover"
+          />
           <div>
             <p className="text-white font-semibold text-sm">Assistente PID</p>
             <p className="text-xs" style={{ color: "#94A3B8" }}>
@@ -216,12 +215,11 @@ export default function ChatBot() {
           ))}
           {loading && (
             <div className="flex justify-start mb-3">
-              <div
-                className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold mr-2 mt-1 shrink-0"
-                style={{ background: "#E84C1F" }}
-              >
-                PID
-              </div>
+              <img
+                src={mapIa}
+                alt="PID"
+                className="w-8 h-8 rounded-full mr-2 mt-1 shrink-0 object-cover"
+              />
               <div
                 className="bg-white border border-gray-100 rounded-2xl shadow-sm"
                 style={{ borderBottomLeftRadius: 4 }}
