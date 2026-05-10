@@ -1,6 +1,7 @@
 import React from "react";
 import { Toggle, MapaBrasil } from "../components/BaseComponents";
 import { usePIDController } from "../controllers/controllers";
+import { DOTS_BASE } from "../models/data";
 
 function useToast() {
   const [msg, setMsg] = React.useState(null);
@@ -23,6 +24,16 @@ function useToast() {
   return { show, Toast };
 }
 
+// Mapeia cada camada PID → cor dos dots no DOTS_BASE
+const COR_MAP = {
+  pid_eol:  "#06B6D4",  // eólica
+  pid_sol:  "#F59E0B",  // solar
+  pid_hid:  "#3B82F6",  // hídrica
+  pid_bio:  "#22C55E",  // biomassa
+  pid_term: "#8B5CF6",  // térmica
+  pid_tens: "#E84C1F",  // subestações
+};
+
 export function PaginaPID({ persona }) {
   const {
     camadas, painelAberto, busca, aba,
@@ -34,19 +45,33 @@ export function PaginaPID({ persona }) {
 
   const { show, Toast } = useToast();
 
+  // Calcula quais cores estão ativas com base nos toggles
+  const coresAtivas = new Set(
+    camadas
+      .filter((c) => c.ativa && COR_MAP[c.id])
+      .map((c) => COR_MAP[c.id])
+  );
+
+  // Filtra DOTS_BASE pelas cores ativas
+  const dots = coresAtivas.size > 0
+    ? DOTS_BASE.filter((d) => coresAtivas.has(d.c))
+    : [];
+
+  // Camada de curtailment separada
+  const showCurtailment = camadas.find((c) => c.id === "pid_cur")?.ativa ?? false;
+
   return (
     <div style={{ height: "calc(100vh - 3.5rem)", position: "relative", overflow: "hidden" }}>
 
-      {/* MAPA — zIndex 0 */}
+      {/* MAPA */}
       <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
-        <MapaBrasil titulo="PID – Plataforma Interativa de Descarbonização" />
+        <MapaBrasil dots={dots} showCurtailment={showCurtailment} />
       </div>
 
-      {/* Overlay mobile ao abrir painel — zIndex 490 */}
+      {/* Overlay mobile */}
       {painelAberto && (
         <div
           onClick={() => setPainelAberto(false)}
-          className="lg:hidden"
           style={{
             position: "absolute", inset: 0,
             background: "rgba(0,0,0,0.4)",
@@ -54,6 +79,8 @@ export function PaginaPID({ persona }) {
           }}
         />
       )}
+
+      {/* restante do JSX igual ao original... */}
 
       {/* Painel drawer — zIndex 500 */}
       <div

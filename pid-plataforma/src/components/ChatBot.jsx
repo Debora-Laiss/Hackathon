@@ -32,8 +32,17 @@ function Message({ msg }) {
         className="max-w-[75%] px-4 py-3 rounded-2xl text-sm leading-relaxed whitespace-pre-wrap shadow-sm"
         style={
           isUser
-            ? { background: "#1A2744", color: "#fff", borderBottomRightRadius: 4 }
-            : { background: "#fff", color: "#1A2744", borderBottomLeftRadius: 4, border: "1px solid #E2E8F0" }
+            ? {
+                background: "#1A2744",
+                color: "#fff",
+                borderBottomRightRadius: 4,
+              }
+            : {
+                background: "#fff",
+                color: "#1A2744",
+                borderBottomLeftRadius: 4,
+                border: "1px solid #E2E8F0",
+              }
         }
       >
         {msg.content}
@@ -44,7 +53,11 @@ function Message({ msg }) {
 
 export default function ChatBot() {
   const [messages, setMessages] = useState([
-    { role: "assistant", content: "Olá! Sou o assistente da Plataforma Interativa de Descarbonização. Como posso te ajudar? 🌿" },
+    {
+      role: "assistant",
+      content:
+        "Olá! Sou o assistente da Plataforma Interativa de Descarbonização. Como posso te ajudar? 🌿",
+    },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
@@ -77,11 +90,17 @@ export default function ChatBot() {
 
       if (!res.ok) throw new Error(`Erro ${res.status}`);
       const data = await res.json();
-      setMessages((prev) => [...prev, { role: "assistant", content: data.response }]);
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: data.response },
+      ]);
     } catch (err) {
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: `⚠️ Erro ao conectar com o servidor: ${err.message}` },
+        {
+          role: "assistant",
+          content: `⚠️ Erro ao conectar com o servidor: ${err.message}`,
+        },
       ]);
     } finally {
       setLoading(false);
@@ -105,25 +124,57 @@ export default function ChatBot() {
         aria-label="Abrir assistente"
       >
         {open ? (
-          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
           </svg>
         ) : (
-          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+            />
           </svg>
         )}
       </button>
 
       {/* Janela do chat */}
       <div
-        className={`fixed bottom-24 right-6 z-50 w-[360px] max-h-[520px] flex flex-col rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 origin-bottom-right ${
-          open ? "scale-100 opacity-100" : "scale-90 opacity-0 pointer-events-none"
+        className={`fixed z-50 flex flex-col rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 origin-bottom-right ${
+          open
+            ? "scale-100 opacity-100"
+            : "scale-90 opacity-0 pointer-events-none"
         }`}
-        style={{ background: "#F7F8FA", border: "1px solid #E2E8F0" }}
+        style={{
+          background: "#F7F8FA",
+          border: "1px solid #E2E8F0",
+          bottom: "calc(56px + 24px + 16px)",
+          right: "clamp(8px, 4vw, 24px)",
+          width: "min(360px, calc(100vw - 16px))", // nunca sai da tela
+          maxHeight: "min(520px, calc(100vh - 140px))", // nunca ultrapassa a tela
+        }}
       >
         {/* Header */}
-        <div className="px-4 py-3 flex items-center gap-3" style={{ background: "#1A2744" }}>
+        <div
+          className="px-4 py-3 flex items-center gap-3"
+          style={{ background: "#1A2744" }}
+        >
           <div
             className="w-9 h-9 rounded-full flex items-center justify-center text-white font-black text-xs shrink-0"
             style={{ background: "#E84C1F" }}
@@ -132,11 +183,19 @@ export default function ChatBot() {
           </div>
           <div>
             <p className="text-white font-semibold text-sm">Assistente PID</p>
-            <p className="text-xs" style={{ color: "#94A3B8" }}>Plataforma de Descarbonização</p>
+            <p className="text-xs" style={{ color: "#94A3B8" }}>
+              Plataforma de Descarbonização
+            </p>
           </div>
           <button
             onClick={() =>
-              setMessages([{ role: "assistant", content: "Olá! Sou o assistente da Plataforma Interativa de Descarbonização. Como posso te ajudar? 🌿" }])
+              setMessages([
+                {
+                  role: "assistant",
+                  content:
+                    "Olá! Sou o assistente da Plataforma Interativa de Descarbonização. Como posso te ajudar? 🌿",
+                },
+              ])
             }
             className="ml-auto text-xs transition-colors hover:text-white"
             style={{ color: "#64748B" }}
@@ -159,7 +218,10 @@ export default function ChatBot() {
               >
                 PID
               </div>
-              <div className="bg-white border border-gray-100 rounded-2xl shadow-sm" style={{ borderBottomLeftRadius: 4 }}>
+              <div
+                className="bg-white border border-gray-100 rounded-2xl shadow-sm"
+                style={{ borderBottomLeftRadius: 4 }}
+              >
                 <TypingDots />
               </div>
             </div>
@@ -186,8 +248,18 @@ export default function ChatBot() {
             className="w-10 h-10 rounded-xl text-white flex items-center justify-center transition-colors shrink-0 disabled:opacity-40 disabled:cursor-not-allowed"
             style={{ background: "#E84C1F" }}
           >
-            <svg className="w-4 h-4 rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+            <svg
+              className="w-4 h-4 rotate-90"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+              />
             </svg>
           </button>
         </div>

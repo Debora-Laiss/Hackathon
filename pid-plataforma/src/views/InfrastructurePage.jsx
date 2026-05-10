@@ -5,11 +5,12 @@ import { useInfraestruturaController } from "../controllers/controllers";
 
 export function PaginaInfraestrutura({ persona }) {
   const {
-    camadas, estado, aberta,
-    setEstado, setAberta,
-    toggleCamada, ativas, categorias, dots, totalPontos,
-    config,
-  } = useInfraestruturaController(persona);
+  camadas, estado, aberta,
+  setEstado, setAberta,
+  toggleCamada, ativas, categorias, dots, totalPontos,
+  showCurtailment,   // 👈 só isso
+  config,
+} = useInfraestruturaController(persona);
 
   const [sheet, setSheet] = useState("peek");
 
@@ -18,7 +19,7 @@ export function PaginaInfraestrutura({ persona }) {
 
       {/* MAPA — zIndex 0 */}
       <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
-        <MapaBrasil dots={dots} titulo="Infraestrutura Energética – Brasil" />
+        <MapaBrasil dots={dots} showCurtailment={showCurtailment} titulo="Infraestrutura Energética – Brasil" />
       </div>
 
       {/* ── SIDEBAR — só desktop ── */}

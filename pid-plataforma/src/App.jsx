@@ -6,6 +6,7 @@ import { PaginaInfraestrutura } from "./views/InfrastructurePage";
 import { PaginaIndustrias } from "./views/IndustriesPage";
 import { PaginaPID } from "./views/PagePID";
 import { PaginaSaibaMais } from "./views/PageLearnMore";
+import { PaginaDecisao } from "./views/PaginaDecisao";
 import ChatBot from "./components/ChatBot";
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
     infraestrutura: <PaginaInfraestrutura persona={persona} />,
     industrias:     <PaginaIndustrias persona={persona} />,
     pid:            <PaginaPID persona={persona} />,
+    decisao:        <PaginaDecisao persona={persona} />,
     saiba:          <PaginaSaibaMais />,
   };
 

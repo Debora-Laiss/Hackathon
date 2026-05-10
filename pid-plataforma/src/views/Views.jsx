@@ -44,6 +44,13 @@ const PERSONAS = [
   },
 ];
 
+const MENSAGENS_PERSONA = {
+  investidor: "💼 O Brasil tem mais de R$ 1 trilhão em oportunidades de investimento verde até 2035. A PID conecta você aos melhores ativos da transição energética.",
+  governo: "🏛️ Tome decisões baseadas em dados reais. A PID mapeia infraestrutura, emissões e potencial renovável por estado para apoiar políticas públicas eficazes.",
+  consultor: "🔬 Acesse camadas técnicas detalhadas de GIS, indicadores setoriais e dados de infraestrutura para análises aprofundadas e relatórios precisos.",
+  cidadao: "🌱 A transição energética gera empregos, reduz a poluição e diminui a conta de luz. Descubra como isso já está mudando a sua região.",
+};
+
 export function PaginaInicio({ setPagina, persona, setPersona }) {
   const [hover, setHover] = useState(null);
   const [confirmado, setConfirmado] = useState(false);
@@ -141,6 +148,7 @@ export function PaginaInicio({ setPagina, persona, setPersona }) {
 
       {/* ── SELEÇÃO DE PERSONA ── */}
       <section style={{ background: "#0D1321", padding: "clamp(48px, 7vw, 80px) clamp(24px, 6vw, 72px)", position: "relative", overflow: "hidden" }}>
+        <style>{`@keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }`}</style>
 
         <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.03, pointerEvents: "none" }}>
           <defs>
@@ -192,50 +200,22 @@ export function PaginaInicio({ setPagina, persona, setPersona }) {
                   position: "relative",
                 }}
               >
-                {/* Badge ativo */}
                 {isAtivo && (
                   <div style={{ position: "absolute", top: 12, right: 12, background: p.corAcento, color: "#000", fontSize: 9, fontWeight: 800, letterSpacing: "0.06em", padding: "3px 8px", borderRadius: 99, textTransform: "uppercase" }}>
                     ✓ Ativo
                   </div>
                 )}
-
-                {/* Ícone */}
-                <div style={{ fontSize: "clamp(28px, 3.5vw, 38px)", marginBottom: 14 }}>
-                  {p.icon}
-                </div>
-
-                {/* Título — sempre branco */}
-                <h3 style={{ fontSize: "clamp(15px, 1.8vw, 18px)", fontWeight: 700, color: "#FFFFFF", margin: "0 0 4px", fontFamily: "'Sora', sans-serif" }}>
-                  {p.titulo}
-                </h3>
-
-                {/* Subtítulo — cinza claro legível */}
-                <p style={{ fontSize: 12, color: "#94A3B8", margin: "0 0 12px" }}>
-                  {p.subtitulo}
-                </p>
-
-                {/* Descrição — branco suave, sempre legível */}
-                <p style={{ fontSize: 13, color: "#CBD5E1", lineHeight: 1.6, margin: "0 0 14px" }}>
-                  {p.descricao}
-                </p>
-
-                {/* Tags */}
+                <div style={{ fontSize: "clamp(28px, 3.5vw, 38px)", marginBottom: 14 }}>{p.icon}</div>
+                <h3 style={{ fontSize: "clamp(15px, 1.8vw, 18px)", fontWeight: 700, color: "#FFFFFF", margin: "0 0 4px", fontFamily: "'Sora', sans-serif" }}>{p.titulo}</h3>
+                <p style={{ fontSize: 12, color: "#94A3B8", margin: "0 0 12px" }}>{p.subtitulo}</p>
+                <p style={{ fontSize: 13, color: "#CBD5E1", lineHeight: 1.6, margin: "0 0 14px" }}>{p.descricao}</p>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
                   {p.tags.map((tag) => (
-                    <span key={tag} style={{
-                      fontSize: 9, fontWeight: 700, letterSpacing: "0.07em",
-                      padding: "3px 8px", borderRadius: 99, textTransform: "uppercase",
-                      background: destacado ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.06)",
-                      color: "#E2E8F0",
-                      border: "1px solid rgba(255,255,255,0.12)",
-                      transition: "background 0.22s",
-                    }}>
+                    <span key={tag} style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.07em", padding: "3px 8px", borderRadius: 99, textTransform: "uppercase", background: destacado ? "rgba(255,255,255,0.15)" : "rgba(255,255,255,0.06)", color: "#E2E8F0", border: "1px solid rgba(255,255,255,0.12)", transition: "background 0.22s" }}>
                       {tag}
                     </span>
                   ))}
                 </div>
-
-                {/* CTA */}
                 <div style={{ marginTop: 16, fontSize: 12, fontWeight: 700, color: isAtivo ? p.corAcento : "#64748B", display: "flex", alignItems: "center", gap: 5, transition: "color 0.22s" }}>
                   {isAtivo ? "Perfil ativo" : `Entrar como ${p.titulo}`}
                   <span style={{ transform: isHover ? "translateX(3px)" : "translateX(0)", transition: "transform 0.18s", display: "inline-block" }}>→</span>
@@ -245,7 +225,7 @@ export function PaginaInicio({ setPagina, persona, setPersona }) {
           })}
         </div>
 
-        {/* Confirmação */}
+        {/* Toast de confirmação */}
         {confirmado && personaAtual && (
           <div style={{ textAlign: "center", marginTop: 24, position: "relative", zIndex: 1 }}>
             <span style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 99, padding: "8px 20px", color: "#fff", fontSize: 13 }}>
@@ -254,7 +234,27 @@ export function PaginaInicio({ setPagina, persona, setPersona }) {
           </div>
         )}
 
-        <p style={{ textAlign: "center", marginTop: 28, fontSize: 12, color: "#475569", position: "relative", zIndex: 1 }}>
+        {/* Mensagem direcionada ao perfil */}
+        {persona && MENSAGENS_PERSONA[persona] && (
+          <div style={{
+            maxWidth: 620,
+            margin: "24px auto 0",
+            padding: "16px 20px",
+            borderRadius: 14,
+            background: "rgba(255,255,255,0.05)",
+            border: `1px solid ${personaAtual?.corAcento}50`,
+            borderLeft: `4px solid ${personaAtual?.corAcento}`,
+            position: "relative",
+            zIndex: 1,
+            animation: "fadeIn 0.4s ease",
+          }}>
+            <p style={{ fontSize: 14, color: "#E2E8F0", lineHeight: 1.75, margin: 0 }}>
+              {MENSAGENS_PERSONA[persona]}
+            </p>
+          </div>
+        )}
+
+        <p style={{ textAlign: "center", marginTop: 20, fontSize: 12, color: "#475569", position: "relative", zIndex: 1 }}>
           Você pode trocar seu perfil a qualquer momento aqui na página inicial.
         </p>
       </section>
