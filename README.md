@@ -14,7 +14,7 @@ Um hub digital que conecta o planejamento industrial verde a dados de infraestru
 
 ## 📋 Sobre o Projeto
 
-A **Plataforma Interativa de Descarbonização (PID)** é uma aplicação web desenvolvida pelo Instituto E+ Transição Energética que oferece um novo olhar para o futuro da transição energética no Brasil.
+A **Plataforma Interativa de Descarbonização (PID)** é uma aplicação web desenvolvida pela equipe 199 que oferece um novo olhar para o futuro da transição energética no Brasil.
 
 A plataforma conta com mapas interativos organizados em camadas que viabilizam o alinhamento estratégico entre o desenvolvimento industrial e o planejamento de infraestrutura, identificando locais promissores para investimento em tecnologias de baixo carbono.
 
@@ -146,12 +146,6 @@ Como parte do ecossistema da plataforma, desenvolvemos um **quiz interativo** pa
 - Novas camadas de dados
 - Indicadores de transição energética por estado
 - Atlas do Futuro Industrial do Brasil
-
-## 🤝 Parceiros & Fontes de Dados
-
-- Instituto E+ Transição Energética
-- Net Zero
-- Johns Hopkins University
 
 ## 📝 Licença
 
