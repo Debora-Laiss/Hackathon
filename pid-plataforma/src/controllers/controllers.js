@@ -140,7 +140,7 @@ export function usePIDController(persona) {
   const [camadas,      setCamadas]      = useState(() =>
     initCamadas(CAMADAS_PID_INIT, cfg.camadasPIDAtivas)
   );
-  const [painelAberto, setPainelAberto] = useState(true);
+  const [painelAberto, setPainelAberto] = useState(false);
   const [busca,        setBusca]        = useState("");
   const [aba,          setAba]          = useState("camadas");
 

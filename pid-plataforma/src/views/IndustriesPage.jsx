@@ -15,6 +15,7 @@ export function PaginaIndustrias({ persona }) {
 
   const [sheet, setSheet] = useState("peek");
   const [abaSheet, setAbaSheet] = useState("lista");
+  const [painelAberto, setPainelAberto] = useState(false);
 
   return (
     <div style={{ height: "calc(100vh - 3.5rem)", position: "relative", overflow: "hidden" }}>
@@ -25,16 +26,24 @@ export function PaginaIndustrias({ persona }) {
       </div>
 
       {/* ── PAINEL LATERAL — só desktop — zIndex 500 ── */}
-      <div
-        className="hidden md:flex"
-        style={{
-          position: "absolute", top: 0, right: 0, bottom: 0,
-          width: 300, background: "#F8FAFC",
-          borderLeft: "1px solid #E2E8F0",
-          flexDirection: "column", zIndex: 500, overflow: "hidden",
-        }}
-      >
-        <div style={{ padding: "12px 12px 8px", background: "#fff", borderBottom: "1px solid #E2E8F0", display: "flex", flexDirection: "column", gap: 8 }}>
+      {painelAberto && (
+        <div
+          className="hidden md:flex"
+          style={{
+            position: "absolute", top: 0, right: 0, bottom: 0,
+            width: 300, background: "#F8FAFC",
+            borderLeft: "1px solid #E2E8F0",
+            flexDirection: "column", zIndex: 500, overflow: "hidden",
+          }}
+        >
+          <div style={{ padding: "12px 12px 8px", background: "#fff", borderBottom: "1px solid #E2E8F0", display: "flex", flexDirection: "column", gap: 8 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 4 }}>
+              <span style={{ fontSize: 13, fontWeight: 700, color: "#1A2744" }}>Indústrias</span>
+              <button
+                onClick={() => setPainelAberto(false)}
+                style={{ background: "none", border: "none", cursor: "pointer", color: "#94A3B8", fontSize: 20, lineHeight: 1 }}
+              >×</button>
+            </div>
 
           {/* KPIs — ficam só aqui dentro, não flutuam */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
@@ -143,14 +152,31 @@ export function PaginaIndustrias({ persona }) {
             </BarChart>
           </ResponsiveContainer>
         </div>
-      </div>
+        </div>
+      )}
+
+      {/* Botão abrir painel — desktop — zIndex 501 */}
+      {!painelAberto && (
+        <button
+          onClick={() => setPainelAberto(true)}
+          className="hidden md:block"
+          style={{
+            position: "absolute", top: 12, right: 12,
+            padding: "8px 16px", borderRadius: 12,
+            background: "#fff", border: "1px solid #E2E8F0",
+            fontSize: 13, fontWeight: 700, color: "#1A2744",
+            cursor: "pointer", boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+            zIndex: 501,
+          }}
+        >☰ Indústrias</button>
+      )}
 
       {/* ── BOTTOM SHEET — só mobile — zIndex 500 ── */}
       <div
         className="md:hidden"
         style={{
           position: "absolute", left: 0, right: 0, bottom: 0,
-          height: sheet === "aberto" ? "72vh" : 56,
+          height: sheet === "aberto" ? "85vh" : 56,
           transition: "height 0.35s cubic-bezier(0.4,0,0.2,1)",
           background: "#fff",
           borderRadius: "18px 18px 0 0",
@@ -168,7 +194,14 @@ export function PaginaIndustrias({ persona }) {
             <span style={{ fontSize: 13, fontWeight: 700, color: "#1A2744" }}>
               {sheet === "aberto" ? "Indústrias" : `${filtradas.length} indústrias — toque para ver`}
             </span>
-            <span style={{ fontSize: 18, color: "#94A3B8" }}>{sheet === "aberto" ? "↓" : "↑"}</span>
+            {sheet === "aberto" ? (
+              <button
+                onClick={(e) => { e.stopPropagation(); setSheet("peek"); }}
+                style={{ background: "none", border: "none", cursor: "pointer", color: "#94A3B8", fontSize: 20, lineHeight: 1, padding: 0 }}
+              >×</button>
+            ) : (
+              <span style={{ fontSize: 18, color: "#94A3B8" }}>↑</span>
+            )}
           </div>
         </div>
 

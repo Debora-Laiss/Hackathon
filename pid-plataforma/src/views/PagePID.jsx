@@ -191,12 +191,46 @@ export function PaginaPID({ persona }) {
         >☰ Camadas</button>
       )}
 
-      {/* Toolbar inferior — zIndex 501 */}
-      <div style={{
+      {/* Toolbar inferior — zIndex 501 — esconde no mobile quando painel aberto */}
+      {!painelAberto && (
+        <div className="lg:hidden" style={{
+          position: "absolute", bottom: 16, left: "50%", transform: "translateX(-50%)",
+          background: "rgba(255,255,255,0.97)", borderRadius: 20,
+          boxShadow: "0 4px 24px rgba(0,0,0,0.15)",
+          display: "flex", gap: 0, padding: "4px 6px",
+          zIndex: 501,
+          maxWidth: "calc(100vw - 32px)",
+        }}>
+          {Toast}
+
+          {[["🗺️", "Base"], ["☰", "Camadas"], ["📏", "Medir"], ["💾", "Salvar"]].map(([icon, lbl]) => (
+            <button key={lbl}
+              onClick={() => {
+                if (lbl === "Camadas") {
+                  setPainelAberto(true);
+                } else {
+                  show("Funcionalidade em breve");
+                }
+              }}
+              style={{
+                display: "flex", flexDirection: "column", alignItems: "center", gap: 2,
+                padding: "8px 12px", background: "none", border: "none", cursor: "pointer",
+                color: "#1A2744", fontSize: 10, fontWeight: 600,
+              }}
+            >
+              <span style={{ fontSize: 18 }}>{icon}</span>
+              <span>{lbl}</span>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Toolbar desktop — sempre visível */}
+      <div className="hidden lg:flex" style={{
         position: "absolute", bottom: 16, left: "50%", transform: "translateX(-50%)",
         background: "rgba(255,255,255,0.97)", borderRadius: 20,
         boxShadow: "0 4px 24px rgba(0,0,0,0.15)",
-        display: "flex", gap: 0, padding: "4px 6px",
+        gap: 0, padding: "4px 6px",
         zIndex: 501,
         maxWidth: "calc(100vw - 32px)",
       }}>
@@ -204,7 +238,13 @@ export function PaginaPID({ persona }) {
 
         {[["🗺️", "Base"], ["☰", "Camadas"], ["📏", "Medir"], ["💾", "Salvar"]].map(([icon, lbl]) => (
           <button key={lbl}
-            onClick={lbl === "Camadas" ? () => setPainelAberto(!painelAberto) : () => show("Funcionalidade em breve")}
+            onClick={() => {
+              if (lbl === "Camadas") {
+                setPainelAberto(!painelAberto);
+              } else {
+                show("Funcionalidade em breve");
+              }
+            }}
             style={{
               display: "flex", flexDirection: "column", alignItems: "center", gap: 2,
               padding: "6px 10px", borderRadius: 14, border: "none",
