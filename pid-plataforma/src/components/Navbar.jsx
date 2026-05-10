@@ -1,5 +1,6 @@
 import React from "react";
 import { NAV_ITEMS, PERSONA_CONFIG } from "../models/data";
+import logo from "../assets/logo.svg";
 
 export function Navbar({ pagina, setPagina, persona }) {
   const [menuAberto, setMenuAberto] = React.useState(false);
@@ -14,9 +15,7 @@ export function Navbar({ pagina, setPagina, persona }) {
         className="flex items-center gap-2 cursor-pointer flex-shrink-0"
         onClick={() => setPagina("inicio")}
       >
-        <div className="w-8 h-8 rounded-full bg-brand flex items-center justify-center text-white font-extrabold text-[11px]">
-          PID
-        </div>
+        <img src={logo} alt="PID" className="w-8 h-8" />
         <div className="hidden sm:block text-black text-[11px] leading-tight">
           <div className="font-semibold">plataforma interativa</div>
           <div className="opacity-60">de descarbonização</div>
