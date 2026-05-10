@@ -184,3 +184,161 @@ export function usePIDController(persona) {
     config: cfg,
   };
 }
+
+// ── useDecisaoController ───────────────────────────────────────
+// Adicione este export ao seu arquivo controllers/controllers.js
+
+// Cenários de simulação energética
+export const CENARIOS_DECISAO = [
+  {
+    id: "solar_massivo",
+    icon: "☀️",
+    titulo: "Expansão Solar Massiva",
+    descricao: "Adicionar 50 GW de solar até 2030, focado em MG, BA e PI.",
+    cor: "#F59E0B",
+    metricas: {
+      capacidadeGW: 95,
+      emissaoMtCO2: 140,
+      empregosMil: 480,
+      investiBi: 280,
+      prazoAnos: 6,
+    },
+  },
+  {
+    id: "eolica_offshore",
+    icon: "💨",
+    titulo: "Eólica Offshore",
+    descricao: "Desenvolvimento de 15 GW offshore no litoral do NE até 2032.",
+    cor: "#06B6D4",
+    metricas: {
+      capacidadeGW: 42,
+      emissaoMtCO2: 95,
+      empregosMil: 210,
+      investiBi: 420,
+      prazoAnos: 10,
+    },
+  },
+  {
+    id: "hidroeletrica",
+    icon: "💧",
+    titulo: "Expansão Hídrica",
+    descricao: "Reabilitação e otimização de UHEs existentes + 8 GW novos na Amazônia.",
+    cor: "#3B82F6",
+    metricas: {
+      capacidadeGW: 62,
+      emissaoMtCO2: 60,
+      empregosMil: 340,
+      investiBi: 195,
+      prazoAnos: 12,
+    },
+  },
+  {
+    id: "h2_verde",
+    icon: "🏭",
+    titulo: "Hub H₂ Verde NE",
+    descricao: "Produção de 2 Mt/ano de hidrogênio verde exportável no Nordeste.",
+    cor: "#8B5CF6",
+    metricas: {
+      capacidadeGW: 30,
+      emissaoMtCO2: 180,
+      empregosMil: 560,
+      investiBi: 380,
+      prazoAnos: 8,
+    },
+  },
+  {
+    id: "bess_transmissao",
+    icon: "🔋",
+    titulo: "BESS + Transmissão",
+    descricao: "Reduzir curtailment em 80% com armazenamento e novas LTs 500kV.",
+    cor: "#22C55E",
+    metricas: {
+      capacidadeGW: 18,
+      emissaoMtCO2: 75,
+      empregosMil: 120,
+      investiBi: 110,
+      prazoAnos: 4,
+    },
+  },
+  {
+    id: "nuclear_avancada",
+    icon: "⚛️",
+    titulo: "Nuclear Avançada",
+    descricao: "SMRs (Small Modular Reactors) para 4 GW de baseload limpa até 2035.",
+    cor: "#6366F1",
+    metricas: {
+      capacidadeGW: 28,
+      emissaoMtCO2: 110,
+      empregosMil: 85,
+      investiBi: 490,
+      prazoAnos: 14,
+    },
+  },
+];
+
+// Sugestões de perguntas por persona
+const SUGESTOES = {
+  investidor: [
+    "Quais estados têm melhor ROI para solar em 2025?",
+    "Como o curtailment afeta meu portfólio eólico?",
+    "Compare BESS vs transmissão como investimento",
+    "Quais projetos têm menor risco regulatório?",
+  ],
+  governo: [
+    "Quais estados precisam de mais transmissão urgente?",
+    "Como atingir as metas NDC com menor custo?",
+    "Impacto do curtailment nas tarifas de energia",
+    "Melhores regiões para polos de H₂ verde",
+  ],
+  regulador: [
+    "Qual protocolo de curtailment é mais eficiente?",
+    "Como melhorar a telemetria do SIN?",
+    "Comparativo de regras CCEE com mercados maduros",
+    "Impacto das mudanças tarifárias no despacho",
+  ],
+  default: [
+    "O que é curtailment e como afeta o Brasil?",
+    "Qual fonte de energia cresce mais rápido?",
+    "Como funciona o mercado livre de energia?",
+    "Quais estados lideram a transição energética?",
+  ],
+};
+
+
+export function useDecisaoController(persona) {
+  const cfg = getConfig(persona);
+
+  const sugestoes = SUGESTOES[persona] || SUGESTOES.default;
+
+  const [mensagens, setMensagens] = useState([
+    {
+      role: "assistant",
+      content: `Olá! Sou o assistente de análise energética da PID.\n\nPosso te ajudar a comparar cenários de expansão, analisar dados de curtailment, avaliar oportunidades de investimento e muito mais.\n\nO que você quer analisar hoje?`,
+    },
+  ]);
+  const [carregando, setCarregando] = useState(false);
+  const [input, setInput] = useState("");
+  const [cenarioA, setCenarioA] = useState("solar_massivo");
+  const [cenarioB, setCenarioB] = useState("bess_transmissao");
+
+  async function enviarMensagem(texto) {
+    const userMsg = { role: "user", content: texto };
+    const loadingMsg = { role: "assistant", content: "", loading: true };
+
+    setMensagens((prev) => [...prev, userMsg, loadingMsg]);
+    setInput("");
+    setCarregando(true);
+
+    // Monta histórico para a API (sem a mensagem de loading)
+  
+ 
+  }
+
+  return {
+    mensagens, carregando, input, setInput,
+    cenarioA, cenarioB, setCenarioA, setCenarioB,
+    cenarios: CENARIOS_DECISAO,
+    enviarMensagem, sugestoes,
+    config: cfg,
+  };
+}

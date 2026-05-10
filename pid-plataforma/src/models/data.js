@@ -406,10 +406,11 @@ export const PARCEIROS = [
 
 // ── NAV ITEMS ──────────────────────────────────────────────────
 export const NAV_ITEMS = [
-  { id: "inicio",         label: "Início"         },
-  { id: "infraestrutura", label: "Infraestrutura" },
-  { id: "industrias",     label: "Indústrias"     },
-  { id: "pid",            label: "PID"            },
+{ id: "inicio",         label: "Início"         },
+{ id: "infraestrutura", label: "Infraestrutura" },
+{ id: "industrias",     label: "Indústrias"     },
+{ id: "pid",            label: "PID"            },
+{ id: "decisao",        label: "Decisão"        },
 ];
 
 // ── PERSONA CONFIG ─────────────────────────────────────────────
