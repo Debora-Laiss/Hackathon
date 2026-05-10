@@ -153,7 +153,6 @@
             </ResponsiveContainer>
           </div>
         </div>
-        </div>
       )}
 
       {/* Botão abrir painel — desktop — zIndex 501 */}
@@ -175,31 +174,21 @@
       {/* ── BOTTOM SHEET — só mobile — zIndex 500 ── */}
       <div
         className="md:hidden"
+        onClick={() => sheet === "peek" && setSheet("aberto")}
         style={{
           position: "absolute", left: 0, right: 0, bottom: 0,
-          height: sheet === "aberto" ? "85vh" : 56,
+          height: sheet === "aberto" ? "72vh" : 56,
           transition: "height 0.35s cubic-bezier(0.4,0,0.2,1)",
           background: "#fff",
           borderRadius: "18px 18px 0 0",
           boxShadow: "0 -4px 24px rgba(0,0,0,0.14)",
           zIndex: 500,
           display: "flex", flexDirection: "column", overflow: "hidden",
+          padding: "12px 16px 0",
+          cursor: sheet === "peek" ? "pointer" : "default",
         }}
       >
-        <div
-          className="md:hidden"
-          style={{
-            position: "absolute", left: 0, right: 0, bottom: 0,
-            height: sheet === "aberto" ? "72vh" : 56,
-            transition: "height 0.35s cubic-bezier(0.4,0,0.2,1)",
-            background: "#fff",
-            borderRadius: "18px 18px 0 0",
-            boxShadow: "0 -4px 24px rgba(0,0,0,0.14)",
-            zIndex: 500,
-            display: "flex", flexDirection: "column", overflow: "hidden",
-          }}
-        >
-          <div style={{ width: 40, height: 4, borderRadius: 2, background: "#E2E8F0", margin: "0 auto 10px" }} />
+        <div style={{ width: 40, height: 4, borderRadius: 2, background: "#E2E8F0", margin: "0 auto 10px" }} />
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <span style={{ fontSize: 13, fontWeight: 700, color: "#1A2744" }}>
               {sheet === "aberto" ? "Indústrias" : `${filtradas.length} indústrias — toque para ver`}
@@ -314,7 +303,7 @@
               </div>
             )}
           </div>
-        </div>
       </div>
+    </div>
     );
   }
