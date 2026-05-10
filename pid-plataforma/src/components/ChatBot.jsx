@@ -119,7 +119,7 @@ export default function ChatBot() {
       {/* Botão flutuante */}
       <button
         onClick={() => setOpen((o) => !o)}
-        className="fixed bottom-10 right-4 z-50 w-14 h-14 rounded-full rounded-full text-white shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-110"
+        className="fixed bottom-10 right-6 z-50 w-14 h-14 rounded-full text-white shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-110"
         style={{ background: "#E84C1F" }}
         aria-label="Abrir assistente"
       >
