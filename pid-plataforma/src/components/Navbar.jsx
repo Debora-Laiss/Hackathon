@@ -167,10 +167,34 @@ export function Navbar({ pagina, setPagina, persona, setPersona }) {
         ))}
       </div>
 
+      {/* Botão Jogue Agora - Desktop */}
+      <a
+        href="https://quiz-omega-blush.vercel.app/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hidden md:flex items-center gap-2 ml-4 px-4 py-2 rounded-lg font-bold text-sm text-white transition-all duration-200 hover:scale-105 hover:shadow-lg active:scale-95"
+        style={{ background: 'linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%)' }}
+      >
+        <span className="text-lg">🎮</span>
+        JOGUE AGORA!
+      </a>
+
+      {/* Botão Jogue Agora - Mobile */}
+      <a
+        href="https://quiz-omega-blush.vercel.app/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="md:hidden ml-auto mr-3 flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold text-xs text-white transition-all duration-200 active:scale-95"
+        style={{ background: 'linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%)' }}
+      >
+        <span className="text-base">🎮</span>
+        JOGAR
+      </a>
+
       {/* Hambúrguer Mobile */}
       <button
         onClick={() => setMenuAberto(!menuAberto)}
-        className="md:hidden ml-auto text-2xl text-navy focus:outline-none"
+        className="md:hidden text-2xl text-navy focus:outline-none"
         aria-label="Menu"
       >
         {menuAberto ? "✕" : "☰"}
