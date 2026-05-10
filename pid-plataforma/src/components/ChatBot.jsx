@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 
-const API_URL = "http://localhost:3000/api/chat"; // 🔁 troque pela URL do seu backend
+const API_URL = "https://backend-6wty.onrender.com/api/chat"; // 🔁 troque pela URL do seu backend
 
 function TypingDots() {
   return (
