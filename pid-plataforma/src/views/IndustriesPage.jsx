@@ -184,11 +184,11 @@
           boxShadow: "0 -4px 24px rgba(0,0,0,0.14)",
           zIndex: 500,
           display: "flex", flexDirection: "column", overflow: "hidden",
-          cursor: sheet === "peek" ? "pointer" : "default",
           padding: "12px 16px 0",
+          cursor: sheet === "peek" ? "pointer" : "default",
         }}
       >
-          <div style={{ width: 40, height: 4, borderRadius: 2, background: "#E2E8F0", margin: "0 auto 12px" }} />
+        <div style={{ width: 40, height: 4, borderRadius: 2, background: "#E2E8F0", margin: "0 auto 12px" }} />
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <span style={{ fontSize: 13, fontWeight: 700, color: "#1A2744" }}>
               {sheet === "aberto" ? "Indústrias" : `${filtradas.length} indústrias — toque para ver`}
