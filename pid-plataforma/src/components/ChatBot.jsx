@@ -119,8 +119,12 @@ export default function ChatBot() {
       {/* Botão flutuante */}
       <button
         onClick={() => setOpen((o) => !o)}
-        className="fixed bottom-10 right-6 z-50 w-14 h-14 rounded-full text-white shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-110"
-        style={{ background: "#E84C1F" }}
+        className="fixed z-50 w-14 h-14 rounded-full text-white shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-110"
+        style={{ 
+          background: "#E84C1F",
+          bottom: "clamp(120px, 20vh, 160px)", // Mobile: 120px, Desktop: até 160px
+          right: "clamp(16px, 4vw, 24px)"
+        }}
         aria-label="Abrir assistente"
       >
         {open ? (
@@ -164,10 +168,10 @@ export default function ChatBot() {
         style={{
           background: "#F7F8FA",
           border: "1px solid #E2E8F0",
-          bottom: "calc(56px + 24px + 16px)",
-          right: "clamp(8px, 4vw, 24px)",
-          width: "min(360px, calc(100vw - 16px))", // nunca sai da tela
-          maxHeight: "min(520px, calc(100vh - 140px))", // nunca ultrapassa a tela
+          bottom: "clamp(184px, calc(20vh + 64px), 224px)", // Acima do botão
+          right: "clamp(16px, 4vw, 24px)",
+          width: "min(360px, calc(100vw - 32px))",
+          maxHeight: "min(520px, calc(100vh - 240px))",
         }}
       >
         {/* Header */}
