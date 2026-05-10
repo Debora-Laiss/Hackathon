@@ -1,6 +1,4 @@
 // ── CONTROLLERS ────────────────────────────────────────────────
-// Responsáveis pela lógica de negócio: filtragem, ordenação, derivações de estado.
-// Cada função recebe estado atual e retorna novos valores ou dados derivados — sem JSX.
 
 import { useState, useMemo } from "react";
 import {
@@ -9,7 +7,19 @@ import {
   CAMADAS_INFRA_INIT,
   CAMADAS_PID_INIT,
   DOTS_BASE,
+  PERSONA_CONFIG,
+  PERSONA_DEFAULT,
 } from "../models/data";
+
+// Retorna a config da persona ativa (ou o default)
+function getConfig(persona) {
+  return persona ? PERSONA_CONFIG[persona] : PERSONA_DEFAULT;
+}
+
+// Inicializa camadas aplicando quais devem ficar ativas para a persona
+function initCamadas(base, idsAtivos) {
+  return base.map((c) => ({ ...c, ativa: idsAtivos.includes(c.id) }));
+}
 
 // ── Controller: Navegação ──────────────────────────────────────
 export function useNavController() {
@@ -18,10 +28,21 @@ export function useNavController() {
 }
 
 // ── Controller: Infraestrutura ────────────────────────────────
-export function useInfraestruturaController() {
-  const [camadas, setCamadas] = useState(CAMADAS_INFRA_INIT);
-  const [estado, setEstado]   = useState("Todos");
-  const [aberta, setAberta]   = useState(true);
+export function useInfraestruturaController(persona) {
+  const cfg = getConfig(persona);
+
+  const [camadas, setCamadas] = useState(() =>
+    initCamadas(CAMADAS_INFRA_INIT, cfg.camadasInfraAtivas)
+  );
+  const [estado, setEstado] = useState("Todos");
+  const [aberta, setAberta] = useState(true);
+
+  // Quando a persona mudar, reaplicar as camadas padrão dela
+  const [personaAnterior, setPersonaAnterior] = useState(persona);
+  if (persona !== personaAnterior) {
+    setPersonaAnterior(persona);
+    setCamadas(initCamadas(CAMADAS_INFRA_INIT, getConfig(persona).camadasInfraAtivas));
+  }
 
   const toggleCamada = (id) =>
     setCamadas((prev) => prev.map((c) => (c.id === id ? { ...c, ativa: !c.ativa } : c)));
@@ -37,15 +58,27 @@ export function useInfraestruturaController() {
     setEstado, setAberta,
     toggleCamada,
     ativas, categorias, dots, totalPontos,
+    config: cfg,
   };
 }
 
 // ── Controller: Indústrias ────────────────────────────────────
-export function useIndustriasController() {
-  const [tipo,   setTipo]   = useState("Todos");
+export function useIndustriasController(persona) {
+  const cfg = getConfig(persona);
+
+  const [tipo,   setTipo]   = useState(cfg.industriaTipoPadrao);
   const [estado, setEstado] = useState("Todos");
   const [busca,  setBusca]  = useState("");
-  const [ordem,  setOrdem]  = useState("consumo");
+  const [ordem,  setOrdem]  = useState(cfg.industriaOrdemPadrao);
+
+  // Quando persona mudar, resetar tipo e ordem para os padrões do novo perfil
+  const [personaAnterior, setPersonaAnterior] = useState(persona);
+  if (persona !== personaAnterior) {
+    const novaCfg = getConfig(persona);
+    setPersonaAnterior(persona);
+    setTipo(novaCfg.industriaTipoPadrao);
+    setOrdem(novaCfg.industriaOrdemPadrao);
+  }
 
   const filtradas = useMemo(() =>
     INDUSTRIAS
@@ -80,19 +113,43 @@ export function useIndustriasController() {
     })),
   [filtradas]);
 
+  // KPIs adaptados à persona
+  const kpiPrincipal = {
+    label: cfg.kpiPrincipalLabel,
+    valor: cfg.kpiPrincipalValor(total),
+    sub:   cfg.kpiPrincipalSub,
+  };
+  const kpiSec = {
+    label: cfg.kpiSecLabel,
+    valor: cfg.kpiSecValor(filtradas),
+  };
+
   return {
     tipo, estado, busca, ordem,
     setTipo, setEstado, setBusca, setOrdem,
     filtradas, total, chartData, dotsIndustria,
+    kpiPrincipal, kpiSec,
+    config: cfg,
   };
 }
 
 // ── Controller: PID ───────────────────────────────────────────
-export function usePIDController() {
-  const [camadas,      setCamadas]      = useState(CAMADAS_PID_INIT);
+export function usePIDController(persona) {
+  const cfg = getConfig(persona);
+
+  const [camadas,      setCamadas]      = useState(() =>
+    initCamadas(CAMADAS_PID_INIT, cfg.camadasPIDAtivas)
+  );
   const [painelAberto, setPainelAberto] = useState(true);
   const [busca,        setBusca]        = useState("");
   const [aba,          setAba]          = useState("camadas");
+
+  // Quando persona mudar, reaplicar camadas padrão
+  const [personaAnterior, setPersonaAnterior] = useState(persona);
+  if (persona !== personaAnterior) {
+    setPersonaAnterior(persona);
+    setCamadas(initCamadas(CAMADAS_PID_INIT, getConfig(persona).camadasPIDAtivas));
+  }
 
   const toggleCamada = (id) =>
     setCamadas((prev) => prev.map((c) => (c.id === id ? { ...c, ativa: !c.ativa } : c)));
@@ -111,5 +168,6 @@ export function usePIDController() {
     setPainelAberto, setBusca, setAba,
     toggleCamada, toggleTodas,
     grupos, visiveis, qtdAtivas,
+    config: cfg,
   };
 }

@@ -90,16 +90,6 @@ export function MapaBrasil({ dots, titulo }) {
         ))}
       </MapContainer>
 
-      {titulo && (
-        <div style={{
-          position: "absolute", top: 10, left: 10, zIndex: 1000,
-          background: "rgba(255,255,255,0.95)", borderRadius: 8, padding: "5px 10px",
-          boxShadow: "0 1px 4px rgba(0,0,0,0.12)",
-        }}>
-          <p style={{ fontSize: 11, fontWeight: 600, color: "#1A2744", margin: 0 }}>{titulo}</p>
-          <p style={{ fontSize: 10, color: "#94A3B8", margin: 0 }}>Dados ilustrativos</p>
-        </div>
-      )}
     </div>
   );
 }
