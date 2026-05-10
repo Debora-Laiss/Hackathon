@@ -24,7 +24,7 @@ export default function App() {
 
   return (
     <div className="font-sans min-h-screen bg-[#F7F8FA]">
-      <Navbar pagina={pagina} setPagina={setPagina} persona={persona} />
+      <Navbar pagina={pagina} setPagina={setPagina} persona={persona} setPersona={setPersona} />
       {PAGINAS[pagina]}
       <ChatBot />
     </div>

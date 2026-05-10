@@ -147,7 +147,7 @@ export function PaginaInicio({ setPagina, persona, setPersona }) {
       </section>
 
       {/* ── SELEÇÃO DE PERSONA ── */}
-      <section style={{ background: "#0D1321", padding: "clamp(48px, 7vw, 80px) clamp(24px, 6vw, 72px)", position: "relative", overflow: "hidden" }}>
+      <section id="escolher-persona" style={{ background: "#0D1321", padding: "clamp(48px, 7vw, 80px) clamp(24px, 6vw, 72px)", position: "relative", overflow: "hidden" }}>
         <style>{`@keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }`}</style>
 
         <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.03, pointerEvents: "none" }}>

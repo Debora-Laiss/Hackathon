@@ -2,10 +2,42 @@ import React from "react";
 import { NAV_ITEMS, PERSONA_CONFIG } from "../models/data";
 import logo from "../assets/logo.svg";
 
-export function Navbar({ pagina, setPagina, persona }) {
+const PERSONAS_LISTA = [
+  { id: "investidor", label: "Investidor", icon: "📈" },
+  { id: "governo", label: "Governo", icon: "🏛️" },
+  { id: "consultor", label: "Consultor Técnico", icon: "🔬" },
+  { id: "cidadao", label: "Cidadão", icon: "🌱" },
+];
+
+export function Navbar({ pagina, setPagina, persona, setPersona }) {
   const [menuAberto, setMenuAberto] = React.useState(false);
+  const [dropdownAberto, setDropdownAberto] = React.useState(false);
+  const dropdownRef = React.useRef(null);
 
   const cfg = persona ? PERSONA_CONFIG[persona] : null;
+
+  // Função para ir até a seção de escolha de persona
+  const irParaEscolherPersona = () => {
+    setPagina("inicio");
+    // Aguarda a navegação e faz scroll para a seção de personas
+    setTimeout(() => {
+      const secao = document.getElementById("escolher-persona");
+      if (secao) {
+        secao.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 100);
+  };
+
+  // Fecha dropdown ao clicar fora
+  React.useEffect(() => {
+    function handleClickFora(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownAberto(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickFora);
+    return () => document.removeEventListener("mousedown", handleClickFora);
+  }, []);
 
   return (
     <nav className="bg-white flex items-center px-4 md:px-8 h-14 border-b border-gray-200 shadow-sm sticky top-0" style={{ zIndex: 9999 }}>
@@ -22,29 +54,98 @@ export function Navbar({ pagina, setPagina, persona }) {
         </div>
       </div>
 
-      {/* Badge de persona */}
-      {cfg && (
+      {/* Badge de persona com dropdown */}
+      {cfg ? (
+        <div className="relative ml-2 sm:ml-3" ref={dropdownRef}>
+          <button
+            onClick={() => setDropdownAberto(!dropdownAberto)}
+            className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded-full border transition-all duration-200 hover:opacity-80 active:scale-95 flex-shrink-0"
+            style={{
+              borderColor: cfg.cor + "55",
+              background:  cfg.cor + "18",
+            }}
+            title="Trocar perfil"
+          >
+            <span className="text-sm leading-none">{cfg.icon}</span>
+            <span
+              className="text-[11px] font-bold hidden xs:block"
+              style={{ color: cfg.cor }}
+            >
+              {cfg.label}
+            </span>
+            <span
+              className="text-[9px] sm:text-[10px]"
+              style={{ color: cfg.cor, opacity: 0.7, transform: dropdownAberto ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.2s' }}
+            >
+              ▼
+            </span>
+          </button>
+
+          {/* Dropdown */}
+          {dropdownAberto && (
+            <>
+              {/* Overlay para fechar ao clicar fora (mobile) */}
+              <div 
+                className="fixed inset-0 md:hidden" 
+                style={{ zIndex: 9998 }}
+                onClick={() => setDropdownAberto(false)}
+              />
+              
+              <div
+                className="fixed md:absolute top-auto md:top-full bottom-0 md:bottom-auto left-0 md:left-auto right-0 md:right-0 md:mt-2 bg-white rounded-t-2xl md:rounded-xl shadow-2xl md:shadow-lg border-t md:border border-gray-200 py-3 md:py-2 w-full md:w-[240px]"
+                style={{ zIndex: 9999 }}
+              >
+                {/* Handle para arrastar (mobile) */}
+                <div className="md:hidden flex justify-center pb-2">
+                  <div className="w-10 h-1 bg-gray-300 rounded-full" />
+                </div>
+
+                <div className="px-4 md:px-3 py-2 border-b border-gray-100">
+                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Trocar Perfil</p>
+                </div>
+                {PERSONAS_LISTA.map((p) => {
+                  const isAtivo = persona === p.id;
+                  const pCfg = PERSONA_CONFIG[p.id];
+                  return (
+                    <button
+                      key={p.id}
+                      onClick={() => {
+                        setPersona(p.id);
+                        setDropdownAberto(false);
+                      }}
+                      className="w-full flex items-center gap-3 md:gap-2.5 px-4 md:px-3 py-3 md:py-2.5 text-left hover:bg-gray-50 transition-colors active:bg-gray-100"
+                      style={{
+                        background: isAtivo ? pCfg.cor + "10" : "transparent",
+                      }}
+                    >
+                      <span className="text-xl md:text-lg flex-shrink-0">{p.icon}</span>
+                      <div className="flex-1 min-w-0">
+                        <div
+                          className="text-sm md:text-xs font-semibold truncate"
+                          style={{ color: isAtivo ? pCfg.cor : "#1A2744" }}
+                        >
+                          {p.label}
+                        </div>
+                      </div>
+                      {isAtivo && (
+                        <span className="text-sm md:text-xs flex-shrink-0 font-bold" style={{ color: pCfg.cor }}>✓</span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </>
+          )}
+        </div>
+      ) : (
         <button
-          onClick={() => setPagina("inicio")}
-          className="ml-3 flex items-center gap-1.5 px-2.5 py-1 rounded-full border transition-all duration-200 hover:opacity-80 flex-shrink-0"
-          style={{
-            borderColor: cfg.cor + "55",
-            background:  cfg.cor + "18",
-          }}
-          title="Trocar perfil"
+          onClick={irParaEscolherPersona}
+          className="ml-2 sm:ml-3 flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 py-1 rounded-full border border-gray-300 bg-gray-100 transition-all duration-200 hover:bg-gray-200 active:scale-95 flex-shrink-0"
+          title="Escolher perfil"
         >
-          <span className="text-sm leading-none">{cfg.icon}</span>
-          <span
-            className="text-[11px] font-bold hidden xs:block"
-            style={{ color: cfg.cor }}
-          >
-            {cfg.label}
-          </span>
-          <span
-            className="text-[10px] hidden md:block"
-            style={{ color: cfg.cor, opacity: 0.7 }}
-          >
-            ↗
+          <span className="text-sm leading-none">👤</span>
+          <span className="text-[11px] font-bold text-gray-600 hidden xs:block">
+            Escolher Perfil
           </span>
         </button>
       )}
@@ -82,7 +183,7 @@ export function Navbar({ pagina, setPagina, persona }) {
           style={{ zIndex: 9999 }}
         >
           {/* Banner de persona no topo do menu mobile */}
-          {cfg && (
+          {cfg ? (
             <button
               onClick={() => { setPagina("inicio"); setMenuAberto(false); }}
               className="w-full flex items-center gap-3 px-5 py-3 border-b border-gray-100 text-left"
@@ -94,6 +195,22 @@ export function Navbar({ pagina, setPagina, persona }) {
                   Perfil ativo: {cfg.label}
                 </div>
                 <div className="text-[11px] text-slate-400">Toque para trocar</div>
+              </div>
+            </button>
+          ) : (
+            <button
+              onClick={() => {
+                setMenuAberto(false);
+                irParaEscolherPersona();
+              }}
+              className="w-full flex items-center gap-3 px-5 py-3 border-b border-gray-100 text-left bg-gray-50"
+            >
+              <span className="text-xl">👤</span>
+              <div>
+                <div className="text-xs font-bold text-gray-600">
+                  Nenhum perfil selecionado
+                </div>
+                <div className="text-[11px] text-slate-400">Toque para escolher</div>
               </div>
             </button>
           )}
